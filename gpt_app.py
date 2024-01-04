@@ -1,5 +1,3 @@
-api_key="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"
-
 import os
 from openai import OpenAI
 

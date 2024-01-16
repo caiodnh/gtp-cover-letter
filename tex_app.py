@@ -1,6 +1,38 @@
 import os
 import subprocess
 
+main_document = r'''
+\documentclass[11pt]{letter}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+
+% Input file with macros
+\input{macros}
+
+% Macro using ``geometry``
+\geometry_conditions
+
+\date{}
+\signature{\applicant_name}
+
+\begin{document}
+
+\begin{letter}{\company_address}
+
+\opening{Dear \hiring_manager,}
+
+% Input letter's main body
+\input{body}
+
+\closing{Sincerely,}
+
+\end{letter}
+\end{document}
+
+'''
+
+
 # LaTeX document content
 latex_content = r'''
 \documentclass{article}

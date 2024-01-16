@@ -9,8 +9,11 @@ Hello, world!
 \end{document}
 '''
 
+# Temporary dir name for testing
+job = 'DATE_COMPANY_JOB'
+
 # Create a directory for the LaTeX project if it doesn't exist
-directory = "latex_project"
+directory = f"cover_letters/{job}"
 if not os.path.exists(directory):
     os.makedirs(directory)
 

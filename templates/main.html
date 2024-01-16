@@ -24,6 +24,17 @@
             display: flex;
             align-items: center;
         }
+	.form-group label {
+	    flex-basis: 20%; /* Adjust this percentage based on your layout */
+	    flex-shrink: 0;
+	    margin-right: 10px;
+        }
+	.form-group input,
+	.form-group textarea,
+	.form-group select {
+            flex-grow: 1;
+            max-width: 400px; /* Maximum width for form fields */
+        }
     </style>
 </head>
 <body>
@@ -41,6 +52,14 @@
                 </select>
             </div>
             <div class="form-group">
+                <label for="jobAd">Job Ad:</label>
+                <textarea id="jobAd" name="jobAd"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="companyAddress">Company Address:</label>
+		<textarea id="companyAddress" name="companyAddress"></textarea>
+            </div>
+            <div class="form-group">
                 <label for="companyName">Company's Name (optional):</label>
                 <input type="text" id="companyName" name="companyName">
             </div>
@@ -49,22 +68,14 @@
                 <input type="text" id="jobTitle" name="jobTitle">
             </div>
             <div class="form-group">
-                <label for="hiringManager">Hiring Manager (optional):</label>
-                <input type="text" id="hiringManager" name="hiringManager">
-            </div>
-            <div class="form-group">
-                <label for="companyAddress">Company Address:</label>
-                <input type="text" id="companyAddress" name="companyAddress">
-            </div>
-            <div class="form-group">
                 <label for="aboutCompany">About Company (optional):</label>
                 <textarea id="aboutCompany" name="aboutCompany"></textarea>
             </div>
             <div class="form-group">
-                <label for="jobAd">Job Ad:</label>
-                <textarea id="jobAd" name="jobAd"></textarea>
+                <label for="hiringManager">Hiring Manager (optional):</label>
+                <input type="text" id="hiringManager" name="hiringManager">
             </div>
-           <button type="submit">Submit</button>
+            <button type="submit">Submit</button>
         </form>
     </div>
 </body>

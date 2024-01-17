@@ -1,5 +1,6 @@
 import os
 import subprocess
+from datetime import datetime
 
 main_document = r'''
 \documentclass[11pt]{letter}
@@ -32,6 +33,23 @@ main_document = r'''
 
 '''
 
+def make_file_name(company, job):
+    def to_pascal_case(text):
+        # Split the text by spaces or underscores
+        words = text.replace('_', ' ').split()
+
+        # Capitalize the first letter of each word and join them together
+        camel_case = ''.join(word.lower().capitalize() for word in words)
+
+        return camel_case
+
+    today = datetime.now()
+    date = today.strftime("%Y-%m-%d")
+
+    return f"{date}_{to_pascal_case(company)}_{to_pascal_case(job)}"
+
+print(make_file_name("caSa do CaraLho", "comedor de putas"))
+pass
 
 # LaTeX document content
 latex_content = r'''

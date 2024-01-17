@@ -1,6 +1,2 @@
 - fill up the base cover letters using xml tags
-- adapt the latex creation to use the right folder
- - perhaps ``cover-letters/company_job_date``
 - make the forms talk with the base cover letters
-- make one of the forms names be ``position``, another ``hiring manager (if known)`` and a third ``job ad``
-- centralize the forms

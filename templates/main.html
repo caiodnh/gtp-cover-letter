@@ -5,37 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cover Letter Assistant</title>
-    <style>
-        body {
-            font-family:system-ui, -apple-system, "Segoe UI", "Roboto", "Ubuntu",
-                    "Cantarell", "Noto Sans", sans-serif, "Apple Color Emoji", 
-                    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-        }
-        .beige-top {
-            background-color: beige;
-            padding: 10px;
-            text-align: center;
-        }
-        .container {
-            margin: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-        }
-	.form-group label {
-	    flex-basis: 20%; /* Adjust this percentage based on your layout */
-	    flex-shrink: 0;
-	    margin-right: 10px;
-        }
-	.form-group input,
-	.form-group textarea,
-	.form-group select {
-            flex-grow: 1;
-            max-width: 400px; /* Maximum width for form fields */
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div class="beige-top">

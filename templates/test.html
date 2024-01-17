@@ -1,39 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags for character set, compatibility, and responsive design -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title of the web page -->
     <title>Cover Letter Assistant</title>
+
+    <!-- Link to external CSS file -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <!-- Header section of the page -->
     <div class="beige-top">
         <h1>Cover Letter Assistant</h1>
     </div>
+
+    <!-- Main container for the form -->
     <div class="container">
+        <!-- Form starts here -->
         <form>
+            <!-- Loop through each field in the form_data passed from Flask -->
             {% for field in form_data %}
                 <div class="form-group">
+                    <!-- Label for the textarea, dynamically set to the field's label -->
                     <label for="{{ field.label }}">{{ field.label }}</label>
-		    <textarea id="{{ field.label }}" name="{{ field.label }}">{{ field.value }}</textarea>
+                    <!-- Textarea for the field's value, pre-filled with data -->
+                    <textarea id="{{ field.label }}" name="{{ field.label }}">{{ field.value }}</textarea>
                 </div>
             {% endfor %}
+            <!-- Submit button for the form -->
             <button type="submit">Submit</button>
         </form>
     </div>
+
+    <!-- JavaScript to adjust the height of textareas -->
     <script>
        function adjustTextAreaHeight() {
+           // Iterate over each textarea element
            document.querySelectorAll('textarea').forEach(textarea => {
                // Reset height to ensure proper calculation
                textarea.style.height = '';
-               // Set height based on scroll height
+               // Set height based on scroll height to fit content
                textarea.style.height = textarea.scrollHeight + 'px';
            });
        }
 
-       // Adjust on page load
+       // Call the function to adjust textarea height on page load
        window.onload = adjustTextAreaHeight;
     </script>
 </body>
 </html>
+

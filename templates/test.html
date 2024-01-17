@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cover Letter Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="beige-top">
+        <h1>Cover Letter Assistant</h1>
+    </div>
+    <div class="container">
+        <form>
+            {% for field in form_data %}
+                <div class="form-group">
+                    <label for="{{ field.label }}">{{ field.label }}</label>
+		    <textarea id="{{ field.label }}" name="{{ field.label }}">{{ field.value }}</textarea>
+                </div>
+            {% endfor %}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script>
+       function adjustTextAreaHeight() {
+           document.querySelectorAll('textarea').forEach(textarea => {
+               // Reset height to ensure proper calculation
+               textarea.style.height = '';
+               // Set height based on scroll height
+               textarea.style.height = textarea.scrollHeight + 'px';
+           });
+       }
+
+       // Adjust on page load
+       window.onload = adjustTextAreaHeight;
+    </script>
+</body>
+</html>

@@ -1,53 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags for character set, compatibility, and responsive design -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title of the webpage -->
     <title>Cover Letter Assistant</title>
+
+    <!-- Link to external CSS file -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <!-- Header section of the webpage -->
     <div class="beige-top">
         <h1>Cover Letter Assistant</h1>
     </div>
+
+    <!-- Main container for the form -->
     <div class="container">
-        <form>
-            <div class="form-group">
-                <label for="baseCoverLetter">Base Cover Letter:</label>
-                <select id="baseCoverLetter" name="baseCoverLetter">
-                    <option value="None">None</option>
-                    <option value="Biostatistician">Biostatistician</option>
-                    <option value="Data Scientist">Data Scientist</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="jobAd">Job Ad:</label>
-                <textarea id="jobAd" name="jobAd"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="companyAddress">Company Address:</label>
-		<textarea id="companyAddress" name="companyAddress"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="companyName">Company's Name (optional):</label>
-                <input type="text" id="companyName" name="companyName">
-            </div>
-            <div class="form-group">
-                <label for="jobTitle">Job Title (optional):</label>
-                <input type="text" id="jobTitle" name="jobTitle">
-            </div>
-            <div class="form-group">
-                <label for="aboutCompany">About Company (optional):</label>
-                <textarea id="aboutCompany" name="aboutCompany"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="hiringManager">Hiring Manager (optional):</label>
-                <input type="text" id="hiringManager" name="hiringManager">
-            </div>
+        <!-- Form with POST method -->
+        <form method="post">
+            <!-- Hidden fields, including CSRF token for security -->
+            {{ form.hidden_tag() }}
+
+            <!-- Loop through each form field -->
+            {% for field in form %}
+                <!-- Check to exclude CSRF token field from rendering -->
+                {% if field.type != 'CSRFTokenField' %} 
+                <div class="form-group">
+                    <!-- Render the label and field -->
+                    {{ field.label }}
+                    {{ field }}
+                </div>
+                {% endif %}
+            {% endfor %}
+
+            <!-- Submit button for the form -->
             <button type="submit">Submit</button>
-        </form>
+        </form>  
     </div>
 </body>
 </html>
-

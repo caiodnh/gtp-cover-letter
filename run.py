@@ -1,26 +1,31 @@
 from flask import Flask, request, render_template
 import xml.etree.ElementTree as ET
 import re
+from forms import CoverLetterForm
 
 app = Flask(__name__)
+# We are using ``Flask-WTF`` in ``forms``, so CSRF protection is automatically enabled
+app.secret_key = 'your_very_secret_key_here'
+# It can be desabled by uncommenting the following line:
+# app.config['WTF_CSRF_ENABLED'] = False
 
-# Route for handling the root page
+# Root page, where the details about the job ad and company should be entered
 @app.route('/', methods=['GET', 'POST'])
-def form():
-    if request.method == 'POST':
-        # Save form data into variables
-        name = request.form['name']
-        summary = request.form['summary']
-        print(f"Name: {name}, Summary: {summary}")  # Log the received data
-        # Respond with received data (for demonstration purposes)
-        return f"Received: Name - {name}, Summary - {summary}"
-    # Render the main form template on GET request
-    return render_template('main.html')
+def home():
+    form = CoverLetterForm()
 
+    if request.method == 'POST' and form.validate_on_submit():
+        print(form.base_cover_letter_content)
+        return form.base_cover_letter_content 
+    
+    return render_template('main.html', form=form)
+
+# Function used in ``/test`` to make the form labels more readable
 def decamelize(s):
     """Converts a camel case string into a space-separated string."""
     return re.sub(r'(?<!^)(?=[A-Z])', ' ', s)
 
+# Page showing a base cover letter xml file
 @app.route('/test')
 def test():
     # Parse the XML file

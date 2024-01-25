@@ -1,7 +1,8 @@
 from flask import Flask, request, render_template
 import xml.etree.ElementTree as ET
 import re
-from forms import CoverLetterForm, CoverLetterData
+from forms import CoverLetterForm
+from cover_letter_processing import CoverLetterData
 
 app = Flask(__name__)
 # We are using ``Flask-WTF`` in ``forms``, so CSRF protection is automatically enabled
@@ -16,7 +17,8 @@ def home():
 
     if request.method == 'POST' and form.validate_on_submit():
         cover_letter = CoverLetterData(form)
-        return cover_letter.candidate.name 
+        cover_letter.create_cover_letter()
+        return cover_letter.new_cover_letter 
     
     return render_template('main.html', form=form)
 

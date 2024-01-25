@@ -60,22 +60,3 @@ class CoverLetterForm(FlaskForm):
         xml_files = [file[:-4] for file in os.listdir('base_cover_letters') if file.endswith('.xml')]
         choices = [('', 'Choose one:')] + [(file, file) for file in xml_files]
         return choices
-    
-class CoverLetterData:
-    def __init__(self,form: CoverLetterForm) -> None:
-        self.candidate = form.candidates_data[int(form.candidate_index.data)]
-        self.base_cover_letter_content = self._get_cover_letter_content(form)
-        self.hiring_manager = form.hiring_manager or "Hiring Manager"
-        self.job_ad = form.job_ad.data
-        self.company_name = form.company_name.data
-        self.job_title = form.job_title.data
-        self.about_company = form.about_company.data
-
-    @staticmethod
-    def _get_cover_letter_content(form):
-        with open(f'base_cover_letters/{form.base_cover_letter.data}.xml', 'r') as file:
-            lines = file.readlines()  # Read all lines into a list
-            if lines and lines[0].startswith('<?xml'):
-                return '\n'.join(lines[1:])  # Join all lines except the first one
-            else:
-                return '\n'.join(lines)  # Join all lines if no XML declaration

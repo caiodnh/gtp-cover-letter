@@ -13,9 +13,8 @@ class Candidate:
     def pretty_print(self):
         return f"Name: {self.name} | Address: {self.address}"
 
-# Class with the form fields
+# Class with root page's the forms fields
 class CoverLetterForm(FlaskForm):
-    ## Form Definition Section ##
 
     # ``candidate_index`` and ``base_cover_letter`` are updated below using ``__init__``, ``get_candidate_choices`` and ``get_base_cover_letter_choices``
     candidate_index = SelectField('Candidate', [validators.DataRequired()], choices=[])
@@ -31,7 +30,7 @@ class CoverLetterForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(CoverLetterForm, self).__init__(*args, **kwargs)
         
-        self.candidate.choices = self.get_candidate_choices()
+        self.candidate_index.choices = self.get_candidate_choices()
         self.base_cover_letter.choices = self.get_base_cover_letter_choices()
 
     # Read the candidate options
@@ -55,7 +54,6 @@ class CoverLetterForm(FlaskForm):
         
         return choices
 
-
     # Read xml files in the folder and create list of choices
     @staticmethod
     def get_base_cover_letter_choices():
@@ -63,20 +61,21 @@ class CoverLetterForm(FlaskForm):
         choices = [('', 'Choose one:')] + [(file, file) for file in xml_files]
         return choices
     
-    ## Post-Submission Processing Section ##
-    # Properties and methods below are for processing and accessing data after form submission
+class CoverLetterData:
+    def __init__(self,form: CoverLetterForm) -> None:
+        self.candidate = form.candidates_data[int(form.candidate_index.data)]
+        self.base_cover_letter_content = self._get_cover_letter_content(form)
+        self.hiring_manager = form.hiring_manager or "Hiring Manager"
+        self.job_ad = form.job_ad.data
+        self.company_name = form.company_name.data
+        self.job_title = form.job_title.data
+        self.about_company = form.about_company.data
 
-    # Get the contents of the chosen base cover letter
-    @property
-    def base_cover_letter_content(self):
-        with open(f'base_cover_letters/{self.base_cover_letter.data}.xml', 'r') as file:
+    @staticmethod
+    def _get_cover_letter_content(form):
+        with open(f'base_cover_letters/{form.base_cover_letter.data}.xml', 'r') as file:
             lines = file.readlines()  # Read all lines into a list
             if lines and lines[0].startswith('<?xml'):
                 return '\n'.join(lines[1:])  # Join all lines except the first one
             else:
                 return '\n'.join(lines)  # Join all lines if no XML declaration
-            
-    # Get the correct string for addressing the hiring manager
-    @property
-    def hiring_manager_string(self):
-        return self.hiring_manager.data or "Hiring Manager"

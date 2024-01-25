@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template
 import xml.etree.ElementTree as ET
 import re
-from forms import CoverLetterForm
+from forms import CoverLetterForm, CoverLetterData
 
 app = Flask(__name__)
 # We are using ``Flask-WTF`` in ``forms``, so CSRF protection is automatically enabled
@@ -9,14 +9,14 @@ app.secret_key = 'your_very_secret_key_here'
 # It can be desabled by uncommenting the following line:
 # app.config['WTF_CSRF_ENABLED'] = False
 
-# Root page, where the details about the job ad and company should be entered
+# Root page, where the details about the candidate, company and job ad should be entered
 @app.route('/', methods=['GET', 'POST'])
 def home():
     form = CoverLetterForm()
 
     if request.method == 'POST' and form.validate_on_submit():
-        print(form.base_cover_letter_content)
-        return form.base_cover_letter_content 
+        cover_letter = CoverLetterData(form)
+        return cover_letter.candidate.name 
     
     return render_template('main.html', form=form)
 

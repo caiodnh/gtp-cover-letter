@@ -2,7 +2,11 @@
   "candidates": [
     {
       "name": "John Doe",
-      "address": "123 Elm Street\nSpringfield, IL 65399\n USA"
+      "address": "123 Elm Street\nSpringfield, IL 65399\nUSA"
+    },
+    {
+      "name": "Caio De Naday Hornhardt",
+      "address": "20 Shriners Rd\nSt. John's, NL A1E 0C4\nCanada"
     }
  ]
 }

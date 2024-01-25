@@ -25,4 +25,15 @@ O que precisamos para isso?
 ## Dia 2024-01-23
 - Terminei o uso do Flask-WTF com uma classe que já faz um pos processamento
 - O próximo passo realmente é o gpt
-- Nossa, foram muitas horas com essa coisa de forms! Talvez eu devesse ter ficado com a versão mais pedestre. Mas goste
+- Nossa, foram muitas horas com essa coisa de forms! Talvez eu devesse ter ficado com a versão mais pedestre. Mas gostei
+## Dia 2024-01-24
+- Uh lah lah
+- Ok, qual é de plano pra hoje?
+- Eu quero fazer o processamento
+- Eu fiquei meio perdido e fiz um prompt. Mas pensando, eu quero agora ver o pdf.
+- Depois quero introduzir a página intermediária para poder modificar o texto antes do pdf.
+## Dia 2024-0125
+- Hoje vai rolar o pdf.
+- vou olhar o latex primeiro
+- E o propmt que eu tenho deve funcionar
+- Quero colocar meu endereço. Como não deixar no github?

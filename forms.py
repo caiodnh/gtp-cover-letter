@@ -10,7 +10,7 @@ class Candidate:
         self.name = name
         self.address = address
 
-    def pretty_print(self):
+    def __str__(self) -> str:
         return f"Name: {self.name} | Address: {self.address}"
 
 # Class with root page's the forms fields
@@ -50,7 +50,7 @@ class CoverLetterForm(FlaskForm):
 
     def get_candidate_choices(self):
         # Make the choices as needed for SelectField
-        choices = [('', 'Choose one:')] + [(index, candidate.pretty_print()) for index, candidate in enumerate(self.candidates_data)]
+        choices = [('', 'Choose one:')] + [(index, str(candidate)) for index, candidate in enumerate(self.candidates_data)]
         
         return choices
 

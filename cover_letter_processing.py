@@ -9,9 +9,19 @@ client = OpenAI(
     
 class CoverLetterData:
     def __init__(self,form: CoverLetterForm) -> None:
-        self.candidate = form.candidates_data[int(form.candidate_index.data)]
+        # The form comes with a list of candidates read from JSON and the index of the chosen one (as a string)
+        # The choice is to use candidate_name instead of candidate.name for uniformity
+        candidate = form.candidates_data[int(form.candidate_index.data)]
+        self.candidate_name = candidate.name
+        self.candidate_address = candidate.address
+
+        # base_cover_letter_content is read from a file
         self.base_cover_letter_content = self._get_cover_letter_content(form)
-        self.hiring_manager = form.hiring_manager or "Hiring Manager"
+
+        # if no hiring manager is provided, we use "Hiring Manager" as default
+        self.hiring_manager = form.hiring_manager.data or "Hiring Manager"
+
+        # The remaining is simply reading the data
         self.job_ad = form.job_ad.data
         self.company_name = form.company_name.data
         self.job_title = form.job_title.data

@@ -55,7 +55,7 @@ class CoverLetterData:
             messages=[
                 {
                     "role": "user",
-                       "content": prompt,
+                    "content": prompt,
                 }
             ],
             model="gpt-3.5-turbo",

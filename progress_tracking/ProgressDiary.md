@@ -49,3 +49,8 @@ O que precisamos para isso?
 - Ok! consertei o endereço. Demorou tipo 1h30, como foi chato isso
 - O próximo passo é colocar numa box
 - Também quero fazer um GptMixin
+- Transformei o gpt num mixin, foi fácil, 15 min
+- Agora quero criar uma página com uma box que contém a letter pra ser copiada e colada
+---
+- Ok, isso foi um terror. Não rolou nem fudendo. Mas acho que agora descobri como fazer.
+- Vai ser tudo dentro da mesma função, no /, e vai ter 2 submits. Acho que isso vai funcionar bem.

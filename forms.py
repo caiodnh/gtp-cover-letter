@@ -60,3 +60,7 @@ class CoverLetterForm(FlaskForm):
         xml_files = [file[:-4] for file in os.listdir('base_cover_letters') if file.endswith('.xml')]
         choices = [('', 'Choose one:')] + [(file, file) for file in xml_files]
         return choices
+    
+# Class with root page's the forms fields
+class CoverLetterTxt(FlaskForm):
+    content = TextAreaField('Cover Letter', [validators.DataRequired()])

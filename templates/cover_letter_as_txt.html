@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Meta tags for character set, compatibility, and responsive design -->
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+        <!-- Title of the webpage -->
+        <title>Cover Letter as Simple Text</title>
+    
+        <!-- Link to external CSS file -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
+<body>
+    <!-- Header section of the webpage -->
+    <div class="beige-top">
+        <h1>Cover Letter Assistant</h1>
+    </div>
+    <!-- Main container for the form -->
+    <div class="container">
+        <form method="post">
+            {{ form.hidden_tag() }}
+            {{ form.content.label }}<br>
+            {{ form.content(rows=10, cols=30) }}<br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</body>
+</html>

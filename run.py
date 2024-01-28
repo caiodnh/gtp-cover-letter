@@ -1,7 +1,7 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, url_for
 import xml.etree.ElementTree as ET
 import re
-from forms import CoverLetterForm
+from forms import CoverLetterForm, CoverLetterTxt
 from cover_letter_processing import CoverLetterData
 from flask import send_from_directory
 
@@ -11,25 +11,38 @@ app.secret_key = 'your_very_secret_key_here'
 # It can be desabled by uncommenting the following line:
 # app.config['WTF_CSRF_ENABLED'] = False
 
+# A global variable that will be used since the application is local and single-user
+cover_letter_data = None
+
 # Root page, where the details about the candidate, company and job ad should be entered
 @app.route('/', methods=['GET', 'POST'])
 def home():
     form = CoverLetterForm()
 
     if request.method == 'POST' and form.validate_on_submit():
-        cover_letter = CoverLetterData(form)
-        print("Create gpt cover letter")
-        cover_letter.create_cover_letter()
-        print("Create latex files")
-        cover_letter.create_latex_files()
+        cover_letter_data = CoverLetterData(form)
+        print("oiiii")
+        print(cover_letter_data.base_cover_letter_content)
 
-        latex_directory = cover_letter.latex_directory
-        filename = "CoverLetter.pdf"
+        return redirect(url_for('cover_letter_as_txt'))
 
-        return send_from_directory(directory=latex_directory, path=filename, as_attachment=False)
+        # print("Create gpt cover letter")
+        # cover_letter.create_cover_letter()
+        # print("Create latex files")
+        # cover_letter.create_latex_files()
+
+        # latex_directory = cover_letter.latex_directory
+        # filename = "CoverLetter.pdf"
+
+        # return send_from_directory(directory=latex_directory, path=filename, as_attachment=False)
 
     elif request.method == 'GET':
         return render_template('main.html', form=form)
+
+@app.route('/cover_letter_as_txt', methods=['GET', 'POST'])
+def cover_letter_as_txt():
+    form = CoverLetterTxt(content=cover_letter_data.base_cover_letter_content)
+    return render_template('cover_letter_as_txt.html', form = form)
 
 # Function used in ``/test`` to make the form labels more readable
 def decamelize(s):

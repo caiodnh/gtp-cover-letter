@@ -1,13 +1,14 @@
 import os
 from openai import OpenAI
 from forms import CoverLetterForm
+from latex_generator import LatexMixin
 
 client = OpenAI(
     # This is the default and can be omitted
     api_key=os.environ.get("OPENAI_API_KEY"),
 )
     
-class CoverLetterData:
+class CoverLetterData(LatexMixin):
     def __init__(self,form: CoverLetterForm) -> None:
         # The form comes with a list of candidates read from JSON and the index of the chosen one (as a string)
         # The choice is to use candidate_name instead of candidate.name for uniformity
@@ -16,7 +17,7 @@ class CoverLetterData:
         self.candidate_address = candidate.address
 
         # base_cover_letter_content is read from a file
-        self.base_cover_letter_content = self._get_cover_letter_content(form)
+        self.base_cover_letter_content = self._get_base_cover_letter_content(form)
 
         # if no hiring manager is provided, we use "Hiring Manager" as default
         self.hiring_manager = form.hiring_manager.data or "Hiring Manager"
@@ -24,11 +25,15 @@ class CoverLetterData:
         # The remaining is simply reading the data
         self.job_ad = form.job_ad.data
         self.company_name = form.company_name.data
+        self.company_address = form.company_address.data
         self.job_title = form.job_title.data
         self.about_company = form.about_company.data
 
+        # The body of the cover letter maybe generated many times, and start with None
+        self.gpt_cover_letter = None
+
     @staticmethod
-    def _get_cover_letter_content(form):
+    def _get_base_cover_letter_content(form):
         with open(f'base_cover_letters/{form.base_cover_letter.data}.xml', 'r') as file:
             lines = file.readlines()  # Read all lines into a list
             if lines and lines[0].startswith('<?xml'):
@@ -71,4 +76,4 @@ class CoverLetterData:
             model="gpt-3.5-turbo",
         )
 
-        self.new_cover_letter = chat_completion.choices[0].message.content
+        self.gpt_cover_letter = chat_completion.choices[0].message.content

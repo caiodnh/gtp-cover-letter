@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 import re
 from forms import CoverLetterForm
 from cover_letter_processing import CoverLetterData
+from flask import send_from_directory
 
 app = Flask(__name__)
 # We are using ``Flask-WTF`` in ``forms``, so CSRF protection is automatically enabled
@@ -17,10 +18,17 @@ def home():
 
     if request.method == 'POST' and form.validate_on_submit():
         cover_letter = CoverLetterData(form)
+        print("Create gpt cover letter")
         cover_letter.create_cover_letter()
-        return cover_letter.new_cover_letter 
-    
-    return render_template('main.html', form=form)
+        print("Create latex files")
+        cover_letter.create_latex_files()
+
+        latex_directory = cover_letter.latex_directory
+        filename = "CoverLetter.pdf"
+
+        return send_from_directory(directory=latex_directory, path=filename, as_attachment=False)
+    elif request.method == 'GET':
+        return render_template('main.html', form=form)
 
 # Function used in ``/test`` to make the form labels more readable
 def decamelize(s):

@@ -2,26 +2,107 @@ import os
 import subprocess
 from datetime import datetime
 
-main_document = r'''
+class LatexMixin:
+    @property
+    def latex_directory(self):
+        # It starts with the date
+        today = datetime.now()
+        date = today.strftime("%Y-%m-%d")
+
+        # The style of the company name and job title is PascalCase
+        def to_pascal_case(text):
+            # Split the text by spaces or underscores
+            words = text.replace('_', ' ').split()
+
+            # Capitalize the first letter of each word and join them together
+            camel_case = ''.join(word.lower().capitalize() for word in words)
+
+            return camel_case
+
+        return f"cover_letters/{date}_{to_pascal_case(self.company_name)}_{to_pascal_case(self.job_title)}"
+
+    @property
+    def latex_macros_file(self):
+        file = (
+            # geometry will play a bigger role in future versions
+            r"\newcommand{\geometryConditions}{\geometry{margin=1in}}" + "\n" +
+            r"\newcommand{\candidateName}{" +self.candidate_name + r"}" + "\n" +
+            r"\newcommand{\candidateAddress}{" + self.candidate_address + r"}" + "\n" +
+            r"\newcommand{\companyAddress}{" + self.company_address + r"}" + "\n" +
+            r"\newcommand{\hiringManager}{" + self.hiring_manager + r"}" + "\n"
+        )
+
+        return file
+
+    def create_latex_files(self):
+        # Ensure the directory exists
+        if not os.path.exists(self.latex_directory):
+            os.makedirs(self.latex_directory)
+
+        # Create main file, whose content never changes (see attribute latex_main_file below)
+        main_file = os.path.join(self.latex_directory, "CoverLetter.tex")
+        with open(main_file, 'w') as file:
+            file.write(self.latex_main_file)
+
+        # Create macros file
+        macros_file = os.path.join(self.latex_directory, "macros.tex")
+        with open(macros_file, 'w') as file:
+            file.write(self.latex_macros_file)
+
+        # Create body of the letter file, assumed withput xml tags
+        if self.gpt_cover_letter is None:
+            self.create_cover_letter()
+
+        body_file = os.path.join(self.latex_directory, "body.tex")
+        with open(body_file, 'w') as file:
+            file.write(self.gpt_cover_letter)
+
+        print("Antes de compilar...")
+
+        # Compile the LaTeX file into a PDF
+        # This requires pdflatex to be installed on your system
+        result = subprocess.run(
+            ['pdflatex',  '-interaction=nonstopmode', "CoverLetter.tex"],
+            capture_output=True,
+            text=True,
+            cwd=self.latex_directory  # Set the working directory to where your LaTeX files are
+        )
+
+        print("Depois de compilar.")
+
+        # Check if pdflatex succeeded
+        if result.returncode == 0:
+            print(f"LaTeX compilation successful.")
+        else:
+            print("LaTeX compilation failed.")
+            print("stdout:", result.stdout)
+            print("stderr:", result.stderr)
+
+        return result.returncode
+
+    # main file, it never changes
+    latex_main_file = r'''
 \documentclass[11pt]{letter}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{geometry}
 
-% Input file with macros
+% Input file with macros:
+% \geometry_conditions, \candidate_name, \candidate_address, \company_address, \hiring_manager
 \input{macros}
 
-% Macro using ``geometry``
-\geometry_conditions
+% Macro using ``geometry`` package
+\geometryConditions
 
+\address{\candidateName\\ \candidateAddress}
 \date{}
-\signature{\applicant_name}
+\signature{\candidateName}
 
 \begin{document}
 
-\begin{letter}{\company_address}
+\begin{letter}{\companyAddress}
 
-\opening{Dear \hiring_manager,}
+\opening{Dear \hiringManager,}
 
 % Input letter's main body
 \input{body}
@@ -30,54 +111,4 @@ main_document = r'''
 
 \end{letter}
 \end{document}
-
 '''
-
-def make_file_name(company, job):
-    def to_pascal_case(text):
-        # Split the text by spaces or underscores
-        words = text.replace('_', ' ').split()
-
-        # Capitalize the first letter of each word and join them together
-        camel_case = ''.join(word.lower().capitalize() for word in words)
-
-        return camel_case
-
-    today = datetime.now()
-    date = today.strftime("%Y-%m-%d")
-
-    return f"{date}_{to_pascal_case(company)}_{to_pascal_case(job)}"
-
-print(make_file_name("caSa do CaraLho", "comedor de putas"))
-pass
-
-# LaTeX document content
-latex_content = r'''
-\documentclass{article}
-\begin{document}
-Hello, world!
-\end{document}
-'''
-
-# Temporary dir name for testing
-job = 'DATE_COMPANY_JOB'
-
-# Create a directory for the LaTeX project if it doesn't exist
-directory = f"cover_letters/{job}"
-if not os.path.exists(directory):
-    os.makedirs(directory)
-
-# Path to the LaTeX file
-file_path = os.path.join(directory, "document.tex")
-
-# Write the LaTeX content to the file
-with open(file_path, 'w') as file:
-    file.write(latex_content)
-
-# Compile the LaTeX file into a PDF
-# This requires pdflatex to be installed on your system
-compile_command = f"pdflatex -output-directory={directory} {file_path}"
-subprocess.run(compile_command, shell=True, check=True)
-
-print(f"LaTeX document compiled: {os.path.join(directory, 'document.pdf')}")
-

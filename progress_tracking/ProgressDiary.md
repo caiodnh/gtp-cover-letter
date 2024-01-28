@@ -39,3 +39,13 @@ O que precisamos para isso?
 - Quero colocar meu endereço. Como não deixar no github
 ## jj
 - Lembrar o prompt de que vai ser em latex, para evitar o problema com o C#?
+## Dia 2024-01-28
+- Meu Deus, já é dia 28
+- Tá, o que eu quero fazer hoje?
+- Tenho o problema do tex com símbolos como % e #
+- Quero resolver o problema do endereço
+- Quero um página que mostra o texto numa box
+- Vou começar pelo problema do endereço
+- Ok! consertei o endereço. Demorou tipo 1h30, como foi chato isso
+- O próximo passo é colocar numa box
+- Também quero fazer um GptMixin

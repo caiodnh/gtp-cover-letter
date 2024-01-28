@@ -27,6 +27,7 @@ def home():
         filename = "CoverLetter.pdf"
 
         return send_from_directory(directory=latex_directory, path=filename, as_attachment=False)
+
     elif request.method == 'GET':
         return render_template('main.html', form=form)
 

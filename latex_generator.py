@@ -27,7 +27,8 @@ class LatexMixin:
             # geometry will play a bigger role in future versions
             r"\newcommand{\geometryConditions}{\geometry{margin=1in}}" + "\n" +
             r"\newcommand{\candidateName}{" +self.candidate_name + r"}" + "\n" +
-            r"\newcommand{\candidateAddress}{" + self.candidate_address + r"}" + "\n" +
+            # Note that we edit the address to have "\\" instead of "\n"
+            r"\newcommand{\candidateAddress}{" + self.candidate_address.replace("\n", r"\\") + r"}" + "\n" +
             r"\newcommand{\companyAddress}{" + self.company_address + r"}" + "\n" +
             r"\newcommand{\hiringManager}{" + self.hiring_manager + r"}" + "\n"
         )
@@ -57,8 +58,6 @@ class LatexMixin:
         with open(body_file, 'w') as file:
             file.write(self.gpt_cover_letter)
 
-        print("Antes de compilar...")
-
         # Compile the LaTeX file into a PDF
         # This requires pdflatex to be installed on your system
         result = subprocess.run(
@@ -67,8 +66,6 @@ class LatexMixin:
             text=True,
             cwd=self.latex_directory  # Set the working directory to where your LaTeX files are
         )
-
-        print("Depois de compilar.")
 
         # Check if pdflatex succeeded
         if result.returncode == 0:

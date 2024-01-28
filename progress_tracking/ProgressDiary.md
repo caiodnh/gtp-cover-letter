@@ -36,4 +36,6 @@ O que precisamos para isso?
 - Hoje vai rolar o pdf.
 - vou olhar o latex primeiro
 - E o propmt que eu tenho deve funcionar
-- Quero colocar meu endereço. Como não deixar no github?
+- Quero colocar meu endereço. Como não deixar no github
+## jj
+- Lembrar o prompt de que vai ser em latex, para evitar o problema com o C#?

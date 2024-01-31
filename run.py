@@ -1,7 +1,7 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, jsonify
 import xml.etree.ElementTree as ET
 import re
-from forms import CoverLetterForm, CoverLetterTxt
+from forms import CoverLetterForm, CoverLetterTxt, MyForm
 from cover_letter_processing import CoverLetterData
 from flask import send_from_directory
 
@@ -18,13 +18,16 @@ cover_letter_data = None
 @app.route('/', methods=['GET', 'POST'])
 def home():
     form = CoverLetterForm()
+    my_form = MyForm()
 
     if request.method == 'POST' and form.validate_on_submit():
         cover_letter_data = CoverLetterData(form)
         print("oiiii")
         print(cover_letter_data.base_cover_letter_content)
 
-        return redirect(url_for('cover_letter_as_txt'))
+        pre_filled = "Hi! My name Monster Truck."
+
+        return jsonify({'pre_filled': pre_filled})
 
         # print("Create gpt cover letter")
         # cover_letter.create_cover_letter()
@@ -37,7 +40,7 @@ def home():
         # return send_from_directory(directory=latex_directory, path=filename, as_attachment=False)
 
     elif request.method == 'GET':
-        return render_template('main.html', form=form)
+        return render_template('main.html', form=form, my_form=my_form)
 
 @app.route('/cover_letter_as_txt', methods=['GET', 'POST'])
 def cover_letter_as_txt():

@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    
     <!-- Title of the webpage -->
     <title>Cover Letter Assistant</title>
-
+    
     <!-- Link to external CSS file -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
@@ -17,29 +17,106 @@
     <div class="beige-top">
         <h1>Cover Letter Assistant</h1>
     </div>
-
+    
     <!-- Main container for the form -->
     <div class="container">
         <!-- Form with POST method -->
         <form method="post">
             <!-- Hidden fields, including CSRF token for security -->
             {{ form.hidden_tag() }}
-
+            
             <!-- Loop through each form field -->
             {% for field in form %}
-                <!-- Check to exclude CSRF token field from rendering -->
-                {% if field.type != 'CSRFTokenField' %} 
-                <div class="form-group">
-                    <!-- Render the label and field -->
-                    {{ field.label }}
-                    {{ field }}
-                </div>
-                {% endif %}
+            <!-- Check to exclude CSRF token field from rendering -->
+            {% if field.type != 'CSRFTokenField' %} 
+            <div class="form-group">
+                <!-- Render the label and field -->
+                {{ field.label }}
+                {{ field }}
+            </div>
+            {% endif %}
             {% endfor %}
-
+            
             <!-- Submit button for the form -->
             <button type="submit">Submit</button>
         </form>  
     </div>
+
+    <div id="newFormContainer" style="display: none; max-width: 800px; margin: 0 auto;">
+        <h2>New Form</h2>
+        <form id="newForm" method="post" action="{{ url_for('home') }}">
+            {{ my_form.hidden_tag() }}
+            <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px; overflow: hidden;">
+                <p style="margin: 0; color: #555; font-weight: bold; float: left;">Dear&nbsp;&nbsp;</p>
+                {{ my_form.friendField(class="form-control", style="width: 8em; float: left; margin-right: 5px;") }}
+                <p style="margin: 0; color: #555; font-weight: bold; float: left;">,</p>
+            </div>
+            {{ my_form.newField(class="form-control", rows="20", style="width: 100%; margin-top: 10px;") }}
+            <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px; margin-top: 10px;">
+                {{ my_form.sincerelyField(class="form-control", style="width: 8em; margin-right: 5px;") }}
+                <p style="margin: 0; color: #555; font-weight: bold; display: inline;">,</p>
+                <!-- Use a div with height for spacing -->
+                <div style="height: 20px;"></div>
+                {{ my_form.nameField(class="form-control", style="width: 17em; margin-left: 0px;") }}
+            </div>
+            <button type="submit" id="submitNewFormButton">Submit</button>
+        </form>
+    </div>    
+
+    <!-- <div id="newFormContainer" style="display: none; max-width: 800px; margin: 0 auto;">
+        <h2>New Form</h2>
+        <form id="newForm">
+            <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px; overflow: hidden;">
+                <p style="margin: 0; color: #555; font-weight: bold; float: left;">Dear&nbsp;&nbsp;</p>
+                <input type="text" name="friendField" style="width: 8em; float: left; margin-right: 5px;">
+                <p style="margin: 0; color: #555; font-weight: bold; float: left;">,</p>
+            </div>
+            <textarea name="newField" rows="20" style="width: 100%; margin-top: 10px;"></textarea>
+            <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px; margin-top: 10px;">
+                <input type="text" name="sincerelyField" style="width: 8em; margin-right: 5px;">
+                <p style="margin: 0; color: #555; font-weight: bold; display: inline;">,</p>-->
+                <!-- Use a div with height for spacing -->
+                <!-- <div style="height: 20px;"></div>
+                <input type="text" name="nameField" style="width: 17em; margin-left: 0px;">
+            </div>
+            <button type="button" id="submitNewFormButton">Submit</button>
+        </form>
+    </div> -->
+    
+    
+    <!-- Update the existing JavaScript code -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const existingForm = document.querySelector('form');
+            const newFormContainer = document.getElementById('newFormContainer');
+            const newFormTextarea = document.querySelector('#newForm textarea');
+            const friendField = document.querySelector('input[name="friendField"]');
+            const sincerelyField = document.querySelector('input[name="sincerelyField"]');
+            const nameField = document.querySelector('input[name="nameField"]');
+            const submitNewFormButton = document.getElementById('submitNewFormButton');
+    
+            existingForm.addEventListener('submit', async function (event) {
+                event.preventDefault(); // Prevent the default form submission behavior
+    
+                // Set the values of the white boxes
+                sincerelyField.value = "Sincerely,";
+                nameField.value = "Atrobald Silva";
+    
+                // Show the new form
+                newFormContainer.style.display = 'block';
+    
+                // Scroll the page to make the new form visible at the top
+                window.scrollTo({ top: newFormContainer.offsetTop, behavior: 'smooth' });
+            });
+    
+            // Handle form submission for the new form using a separate button
+            submitNewFormButton.addEventListener('click', function () {
+                alert(newFormTextarea.value);
+                // Uncomment the line below to submit the form to the server if needed
+                // existingForm.submit();
+            });
+        });
+    </script>
+    
 </body>
 </html>

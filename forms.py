@@ -64,3 +64,9 @@ class CoverLetterForm(FlaskForm):
 # Class with root page's the forms fields
 class CoverLetterTxt(FlaskForm):
     content = TextAreaField('Cover Letter', [validators.DataRequired()])
+
+class MyForm(FlaskForm):
+    friendField = StringField('Friend')
+    newField = TextAreaField('New Field')
+    sincerelyField = StringField('Sincerely')
+    nameField = StringField('Name')

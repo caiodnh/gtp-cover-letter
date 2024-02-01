@@ -18,11 +18,10 @@
         <h1>Cover Letter Assistant</h1>
     </div>
     
-    <!-- Main container for the form -->
-    <div class="container">
-        <!-- Form with POST method -->
+    <!-- Container for the Intial Form. Shows from the start. -->
+    <div class="container" id="initialFormContainer">
         <form method="post">
-            <!-- Hidden fields, including CSRF token for security -->
+            <!-- Hidden fields: CSRF token for security -->
             {{ initial_form.hidden_tag() }}
             
             <!-- Loop through each form field -->
@@ -42,10 +41,11 @@
         </form>  
     </div>
 
-    <div id="newFormContainer" style="display: none; max-width: 800px; margin: 0 auto;">
+    <!-- Container for the Plain Text Form. Shows only after the Initial Form is submitted. -->
+    <div class="container" id="plainTextFormContainer" style="display: none; max-width: 800px; margin: 0 auto;">
         <h2>Cover Letter in Plain Text</h2>
         <p>You can edit this before copying or generating a pdf version.</p>
-        <form id="newForm" method="post" action="{{ url_for('home') }}">
+        <form id="plainTextForm" method="post" action="{{ url_for('home') }}">
             {{ plain_txt_form.hidden_tag() }}
             <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px; overflow: hidden;">
                 <p style="margin: 0; color: #555; font-weight: bold; float: left;">Dear&nbsp;&nbsp;</p>
@@ -65,52 +65,23 @@
             <button type="submit" id="submitNewFormButton">Blank button</button>
         </form>
     </div>    
-
-    <!-- <div id="newFormContainer" style="display: none; max-width: 800px; margin: 0 auto;">
-        <h2>New Form</h2>
-        <form id="newForm">
-            <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px; overflow: hidden;">
-                <p style="margin: 0; color: #555; font-weight: bold; float: left;">Dear&nbsp;&nbsp;</p>
-                <input type="text" name="friendField" style="width: 8em; float: left; margin-right: 5px;">
-                <p style="margin: 0; color: #555; font-weight: bold; float: left;">,</p>
-            </div>
-            <textarea name="newField" rows="20" style="width: 100%; margin-top: 10px;"></textarea>
-            <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px; margin-top: 10px;">
-                <input type="text" name="sincerelyField" style="width: 8em; margin-right: 5px;">
-                <p style="margin: 0; color: #555; font-weight: bold; display: inline;">,</p>-->
-                <!-- Use a div with height for spacing -->
-                <!-- <div style="height: 20px;"></div>
-                <input type="text" name="nameField" style="width: 17em; margin-left: 0px;">
-            </div>
-            <button type="button" id="submitNewFormButton">Submit</button>
-        </form>
-    </div> -->
     
-    
-    <!-- Update the existing JavaScript code -->
+    <!-- JavaScript code -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const existingForm = document.querySelector('form');
-            const newFormContainer = document.getElementById('newFormContainer');
+            const plainTextFormContainer = document.getElementById('plainTextFormContainer');
             const newFormTextarea = document.querySelector('#newForm textarea');
-            const friendField = document.querySelector('input[name="friendField"]');
-            const sincerelyField = document.querySelector('input[name="sincerelyField"]');
-            const nameField = document.querySelector('input[name="nameField"]');
             const submitNewFormButton = document.getElementById('submitNewFormButton');
     
             existingForm.addEventListener('submit', async function (event) {
                 event.preventDefault(); // Prevent the default form submission behavior
     
-                // Set the values of the white boxes
-                friendField.value = "Hiring Manager"
-                sincerelyField.value = "Sincerely";
-                nameField.value = "Astrobald Silva";
-    
                 // Show the new form
-                newFormContainer.style.display = 'block';
+                plainTextFormContainer.style.display = 'block';
     
                 // Scroll the page to make the new form visible at the top
-                window.scrollTo({ top: newFormContainer.offsetTop, behavior: 'smooth' });
+                window.scrollTo({ top: plainTextFormContainer.offsetTop, behavior: 'smooth' });
             });
     
             // Handle form submission for the new form using a separate button

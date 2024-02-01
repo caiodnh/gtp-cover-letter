@@ -17,11 +17,11 @@ cover_letter_data = None
 # Root page, where the details about the candidate, company and job ad should be entered
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    form = InitialForm()
-    my_form = PlainTextForm()
+    initial_form = InitialForm()
+    plain_txt_form = PlainTextForm()
 
-    if request.method == 'POST' and form.validate_on_submit():
-        cover_letter_data = CoverLetterData(form)
+    if request.method == 'POST' and initial_form.validate_on_submit():
+        cover_letter_data = CoverLetterData(initial_form)
         print("oiiii")
         print(cover_letter_data.base_cover_letter_content)
 
@@ -40,7 +40,7 @@ def home():
         # return send_from_directory(directory=latex_directory, path=filename, as_attachment=False)
 
     elif request.method == 'GET':
-        return render_template('main.html', form=form, my_form=my_form)
+        return render_template('main.html', initial_form=initial_form, plain_txt_form=plain_txt_form)
 
 @app.route('/cover_letter_as_txt', methods=['GET', 'POST'])
 def cover_letter_as_txt():

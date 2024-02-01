@@ -23,10 +23,10 @@
         <!-- Form with POST method -->
         <form method="post">
             <!-- Hidden fields, including CSRF token for security -->
-            {{ form.hidden_tag() }}
+            {{ initial_form.hidden_tag() }}
             
             <!-- Loop through each form field -->
-            {% for field in form %}
+            {% for field in initial_form %}
             <!-- Check to exclude CSRF token field from rendering -->
             {% if field.type != 'CSRFTokenField' %} 
             <div class="form-group">
@@ -46,19 +46,19 @@
         <h2>Cover Letter in Plain Text</h2>
         <p>You can edit this before copying or generating a pdf version.</p>
         <form id="newForm" method="post" action="{{ url_for('home') }}">
-            {{ my_form.hidden_tag() }}
+            {{ plain_txt_form.hidden_tag() }}
             <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px; overflow: hidden;">
                 <p style="margin: 0; color: #555; font-weight: bold; float: left;">Dear&nbsp;&nbsp;</p>
-                {{ my_form.friendField(class="form-control", style="width: 8em; float: left; margin-right: 5px;") }}
+                {{ plain_txt_form.friendField(class="form-control", style="width: 8em; float: left; margin-right: 5px;") }}
                 <p style="margin: 0; color: #555; font-weight: bold; float: left;">,</p>
             </div>
-            {{ my_form.newField(class="form-control", rows="20", style="width: 99%; margin-top: 10px;") }}
+            {{ plain_txt_form.newField(class="form-control", rows="20", style="width: 99%; margin-top: 10px;") }}
             <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px; margin-top: 10px;">
-                {{ my_form.sincerelyField(class="form-control", style="width: 8em; margin-right: 5px;") }}
+                {{ plain_txt_form.sincerelyField(class="form-control", style="width: 8em; margin-right: 5px;") }}
                 <p style="margin: 0; color: #555; font-weight: bold; display: inline;">,</p>
                 <!-- Use a div with height for spacing -->
                 <div style="height: 20px;"></div>
-                {{ my_form.nameField(class="form-control", style="width: 17em; margin-left: 0px;") }}
+                {{ plain_txt_form.nameField(class="form-control", style="width: 17em; margin-left: 0px;") }}
             </div>
             <!-- Use a div with height for spacing -->
             <div style="height: 10px;"></div>

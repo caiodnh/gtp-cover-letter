@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for, jsonify
 import xml.etree.ElementTree as ET
 import re
-from forms import CoverLetterForm, CoverLetterTxt, MyForm
+from forms import InitialForm, PlainTextForm
 from cover_letter_processing import CoverLetterData
 from flask import send_from_directory
 
@@ -17,8 +17,8 @@ cover_letter_data = None
 # Root page, where the details about the candidate, company and job ad should be entered
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    form = CoverLetterForm()
-    my_form = MyForm()
+    form = InitialForm()
+    my_form = PlainTextForm()
 
     if request.method == 'POST' and form.validate_on_submit():
         cover_letter_data = CoverLetterData(form)
@@ -44,7 +44,7 @@ def home():
 
 @app.route('/cover_letter_as_txt', methods=['GET', 'POST'])
 def cover_letter_as_txt():
-    form = CoverLetterTxt(content=cover_letter_data.base_cover_letter_content)
+    form = PlainTextForm(content=cover_letter_data.base_cover_letter_content)
     return render_template('cover_letter_as_txt.html', form = form)
 
 # Function used in ``/test`` to make the form labels more readable

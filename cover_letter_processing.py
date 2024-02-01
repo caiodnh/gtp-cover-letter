@@ -1,11 +1,14 @@
-from forms import CoverLetterForm
+from forms import InitialForm, PlainTextForm
 from gpt_interface import GptMixin
 from latex_generator import LatexMixin
     
 # Here we are using the Mixin design pattern to separate part of the code into other files
 # This does only the form preprocessing
 class CoverLetterData(GptMixin, LatexMixin):
-    def __init__(self,form: CoverLetterForm) -> None:
+    def __init__(self) -> None:
+        pass
+
+    def process_initial_form(self,form: InitialForm) -> None:
         # The form comes with a list of candidates read from JSON and the index of the chosen one (as a string)
         # The choice is to use candidate_name instead of candidate.name for uniformity
         candidate = form.candidates_data[int(form.candidate_index.data)]
@@ -36,3 +39,6 @@ class CoverLetterData(GptMixin, LatexMixin):
                 return '\n'.join(lines[1:])  # Join all lines except the first one
             else:
                 return '\n'.join(lines)  # Join all lines if no XML declaration
+            
+    def process_plain_text_form(self,form: PlainTextForm) -> None:
+        pass

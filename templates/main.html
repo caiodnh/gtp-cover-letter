@@ -38,12 +38,13 @@
             {% endfor %}
             
             <!-- Submit button for the form -->
-            <button type="submit">Submit</button>
+            <button type="submit">Generate</button>
         </form>  
     </div>
 
     <div id="newFormContainer" style="display: none; max-width: 800px; margin: 0 auto;">
-        <h2>New Form</h2>
+        <h2>Cover Letter in Plain Text</h2>
+        <p>You can edit this before copying or generating a pdf version.</p>
         <form id="newForm" method="post" action="{{ url_for('home') }}">
             {{ my_form.hidden_tag() }}
             <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px; overflow: hidden;">
@@ -51,7 +52,7 @@
                 {{ my_form.friendField(class="form-control", style="width: 8em; float: left; margin-right: 5px;") }}
                 <p style="margin: 0; color: #555; font-weight: bold; float: left;">,</p>
             </div>
-            {{ my_form.newField(class="form-control", rows="20", style="width: 100%; margin-top: 10px;") }}
+            {{ my_form.newField(class="form-control", rows="20", style="width: 99%; margin-top: 10px;") }}
             <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px; margin-top: 10px;">
                 {{ my_form.sincerelyField(class="form-control", style="width: 8em; margin-right: 5px;") }}
                 <p style="margin: 0; color: #555; font-weight: bold; display: inline;">,</p>
@@ -59,7 +60,9 @@
                 <div style="height: 20px;"></div>
                 {{ my_form.nameField(class="form-control", style="width: 17em; margin-left: 0px;") }}
             </div>
-            <button type="submit" id="submitNewFormButton">Submit</button>
+            <!-- Use a div with height for spacing -->
+            <div style="height: 10px;"></div>
+            <button type="submit" id="submitNewFormButton">Blank button</button>
         </form>
     </div>    
 
@@ -99,8 +102,9 @@
                 event.preventDefault(); // Prevent the default form submission behavior
     
                 // Set the values of the white boxes
-                sincerelyField.value = "Sincerely,";
-                nameField.value = "Atrobald Silva";
+                friendField.value = "Hiring Manager"
+                sincerelyField.value = "Sincerely";
+                nameField.value = "Astrobald Silva";
     
                 // Show the new form
                 newFormContainer.style.display = 'block';

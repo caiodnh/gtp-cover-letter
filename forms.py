@@ -14,21 +14,21 @@ class Candidate:
         return f"Name: {self.name} | Address: {self.address}"
 
 # Class with root page's the forms fields
-class CoverLetterForm(FlaskForm):
+class InitialForm(FlaskForm):
 
     # ``candidate_index`` and ``base_cover_letter`` are updated below using ``__init__``, ``get_candidate_choices`` and ``get_base_cover_letter_choices``
     candidate_index = SelectField('Candidate', [validators.DataRequired()], choices=[])
     base_cover_letter = SelectField('Base Cover Letter', [validators.DataRequired()], choices=[])
-    job_ad = TextAreaField('Job Ad', [validators.DataRequired()])
-    company_address = TextAreaField("Company's Address", [validators.DataRequired()])
     company_name = StringField('Company Name', [validators.DataRequired()])
     job_title = StringField('Job Title', [validators.DataRequired()])
-    about_company = TextAreaField('About Company (optional)')
     hiring_manager = StringField('Hiring Manager (optional)')
+    job_ad = TextAreaField('Job Ad', [validators.DataRequired()], render_kw={'rows': 15})
+    about_company = TextAreaField('About Company (optional)', render_kw={'rows': 10})
+    company_address = TextAreaField("Company's Address", [validators.DataRequired()])
 
     # Initialize dynamic choices for the ``base_cover_letter`` field
     def __init__(self, *args, **kwargs):
-        super(CoverLetterForm, self).__init__(*args, **kwargs)
+        super(InitialForm, self).__init__(*args, **kwargs)
         
         self.candidate_index.choices = self.get_candidate_choices()
         self.base_cover_letter.choices = self.get_base_cover_letter_choices()
@@ -65,8 +65,8 @@ class CoverLetterForm(FlaskForm):
 class CoverLetterTxt(FlaskForm):
     content = TextAreaField('Cover Letter', [validators.DataRequired()])
 
-class MyForm(FlaskForm):
-    friendField = StringField('Friend')
-    newField = TextAreaField('New Field')
-    sincerelyField = StringField('Sincerely')
-    nameField = StringField('Name')
+class PlainTextForm(FlaskForm):
+    friendField = StringField('Friend', [validators.DataRequired()])
+    newField = TextAreaField('New Field', [validators.DataRequired()])
+    sincerelyField = StringField('Sincerely', [validators.DataRequired()])
+    nameField = StringField('Name', [validators.DataRequired()])

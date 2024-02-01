@@ -21,15 +21,18 @@ class CoverLetterData(GptMixin, LatexMixin):
         # if no hiring manager is provided, we use "Hiring Manager" as default
         self.hiring_manager = form.hiring_manager.data or "Hiring Manager"
 
-        # The remaining is simply reading the data
+        # For the following is simply reading the data
         self.job_ad = form.job_ad.data
         self.company_name = form.company_name.data
-        self.company_address = form.company_address.data
         self.job_title = form.job_title.data
         self.about_company = form.about_company.data
 
-        # The body of the cover letter maybe generated many times, and start with None
+        # The following start with None
         self.gpt_cover_letter = None
+        self.company_address = None
+
+        # The following has a standart value
+        self.closing_expression = "Sincerely"
 
     @staticmethod
     def _get_base_cover_letter_content(form):
@@ -40,5 +43,14 @@ class CoverLetterData(GptMixin, LatexMixin):
             else:
                 return '\n'.join(lines)  # Join all lines if no XML declaration
             
-    def process_plain_text_form(self,form: PlainTextForm) -> None:
-        pass
+    def set_plain_text_form_defaults(self, form : PlainTextForm):
+        form.hiring_manager.default = self.hiring_manager
+        form.cover_letter_body.default = self.gpt_cover_letter
+        form.closing_expression.default = self.closing_expression
+        form.candidate.default = self.candidate_name
+            
+    def process_plain_text_form(self, form: PlainTextForm) -> None:
+        self.hiring_manager = form.hiring_manager.data
+        self.gpt_cover_letter = form.cover_letter_body.data
+        self.closing_expression = form.closing_expression.data
+        self.candidate_name = form.candidate.data

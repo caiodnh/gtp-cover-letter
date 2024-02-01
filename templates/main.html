@@ -49,16 +49,16 @@
             {{ plain_txt_form.hidden_tag() }}
             <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px; overflow: hidden;">
                 <p style="margin: 0; color: #555; font-weight: bold; float: left;">Dear&nbsp;&nbsp;</p>
-                {{ plain_txt_form.friendField(class="form-control", style="width: 8em; float: left; margin-right: 5px;") }}
+                {{ plain_txt_form.hiring_manager(class="form-control", style="width: 8em; float: left; margin-right: 5px;") }}
                 <p style="margin: 0; color: #555; font-weight: bold; float: left;">,</p>
             </div>
-            {{ plain_txt_form.newField(class="form-control", rows="20", style="width: 99%; margin-top: 10px; resize: vertical;") }}
+            {{ plain_txt_form.cover_letter_body(class="form-control", rows="20", style="width: 99%; margin-top: 10px; resize: vertical;") }}
             <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px; margin-top: 10px;">
-                {{ plain_txt_form.sincerelyField(class="form-control", style="width: 8em;") }}
+                {{ plain_txt_form.closing_expression(class="form-control", style="width: 8em;") }}
                 <p style="margin: 0; color: #555; font-weight: bold; display: inline;">,</p>
                 <!-- Use a div with height for spacing -->
                 <div style="height: 20px;"></div>
-                {{ plain_txt_form.nameField(class="form-control", style="width: 17em; margin-left: 0px;") }}
+                {{ plain_txt_form.candidate(class="form-control", style="width: 17em; margin-left: 0px;") }}
             </div>
             <!-- Use a div with height for spacing -->
             <div style="height: 10px;"></div>
@@ -69,6 +69,20 @@
     <!-- JavaScript code -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Fetch data from the server
+            fetch('/').then(response => response.json()).then(data => {
+                // Set the default values using the fetched data
+                const hiringManagerField = document.querySelector('input[name="hiring_manager"]');
+                const coverLetterBodyField = document.querySelector('textarea[name="cover_letter_body"]');
+                const closingExpressionField = document.querySelector('input[name="closing_expression"]');
+                const candidateField = document.querySelector('input[name="candidate"]');
+    
+                hiringManagerField.value = data.hiring_manager;
+                coverLetterBodyField.value = data.cover_letter_body;
+                closingExpressionField.value = data.closing_expression;
+                candidateField.value = data.candidate;
+            });
+    
             const existingForm = document.querySelector('form');
             const plainTextFormContainer = document.getElementById('plainTextFormContainer');
             const newFormTextarea = document.querySelector('#newForm textarea');

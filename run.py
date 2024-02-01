@@ -21,13 +21,20 @@ def home():
     plain_txt_form = PlainTextForm()
 
     if request.method == 'POST' and initial_form.validate_on_submit():
-        cover_letter_data = CoverLetterData(initial_form)
-        print("oiiii")
-        print(cover_letter_data.base_cover_letter_content)
+        cover_letter_data = CoverLetterData()
+        cover_letter_data.process_initial_form(initial_form)
 
-        pre_filled = "Hi! My name Monster Truck."
+        # cover_letter_data.set_plain_text_form_defaults(plain_txt_form)
+        # plain_txt_form.set_defaults(cover_letter_data)
 
-        return jsonify({'pre_filled': pre_filled})
+        data_for_next_form = {
+            'hiring_manager': cover_letter_data.hiring_manager,
+            'cover_letter_body': "xxx",
+            'closing_expression': cover_letter_data.closing_expression,
+            'candidate': cover_letter_data.candidate_name,
+        }
+
+        return jsonify(data_for_next_form)
 
         # print("Create gpt cover letter")
         # cover_letter.create_cover_letter()

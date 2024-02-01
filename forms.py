@@ -24,7 +24,8 @@ class InitialForm(FlaskForm):
     hiring_manager = StringField('Hiring Manager (optional)')
     job_ad = TextAreaField('Job Ad', [validators.DataRequired()], render_kw={'rows': 15})
     about_company = TextAreaField('About Company (optional)', render_kw={'rows': 10})
-    company_address = TextAreaField("Company's Address", [validators.DataRequired()])
+    # The address is going to a new form later
+    # company_address = TextAreaField("Company's Address", [validators.DataRequired()])
 
     # Initialize dynamic choices for the ``base_cover_letter`` field
     def __init__(self, *args, **kwargs):
@@ -66,7 +67,13 @@ class CoverLetterTxt(FlaskForm):
     content = TextAreaField('Cover Letter', [validators.DataRequired()])
 
 class PlainTextForm(FlaskForm):
-    friendField = StringField('Friend', [validators.DataRequired()])
-    newField = TextAreaField('New Field', [validators.DataRequired()])
-    sincerelyField = StringField('Sincerely', [validators.DataRequired()])
-    nameField = StringField('Name', [validators.DataRequired()])
+    hiring_manager = StringField('Hiring Manager', [validators.DataRequired()])
+    cover_letter_body = TextAreaField('Body', [validators.DataRequired()])
+    closing_expression = StringField('Closing expression', [validators.DataRequired()])
+    candidate = StringField('Candidate', [validators.DataRequired()])
+
+    def set_defaults(self, data):
+        self.hiring_manager.data = data.hiring_manager
+        self.cover_letter_body.data = data.gpt_cover_letter
+        self.closing_expression.data = data.closing_expression
+        self.candidate.data = data.candidate_name

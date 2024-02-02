@@ -1,8 +1,8 @@
-from flask import Flask, request, render_template, redirect, url_for, jsonify
+from flask import Flask, request, render_template, redirect, url_for, jsonify, session
 import xml.etree.ElementTree as ET
 import re
 from forms import InitialForm, PlainTextForm
-from cover_letter_processing import CoverLetterData
+from cover_letter_processing import CoverLetter
 from flask import send_from_directory
 
 app = Flask(__name__)
@@ -11,27 +11,37 @@ app.secret_key = 'your_very_secret_key_here'
 # It can be desabled by uncommenting the following line:
 # app.config['WTF_CSRF_ENABLED'] = False
 
-# A global variable that will be used since the application is local and single-user
-cover_letter_data = None
-
 # Root page, where the details about the candidate, company and job ad should be entered
 @app.route('/', methods=['GET', 'POST'])
 def home():
+    # Create forms
     initial_form = InitialForm()
     plain_txt_form = PlainTextForm()
 
-    if request.method == 'POST' and initial_form.validate_on_submit():
-        cover_letter_data = CoverLetterData()
-        cover_letter_data.process_initial_form(initial_form)
+    if request.method == 'GET':
+        # Check if session data exists and pass it to the template or handle it as needed
+        stored_data = session.get('cover_letter_data', None)
+        return render_template('main.html', initial_form=initial_form, plain_txt_form=plain_txt_form, stored_data=stored_data)
 
-        # cover_letter_data.set_plain_text_form_defaults(plain_txt_form)
-        # plain_txt_form.set_defaults(cover_letter_data)
+    if initial_form.validate_on_submit():
+        # Process the initial_form data; it resets all entries in cover_letter.data
+        cover_letter = CoverLetter()
+        cover_letter.process_initial_form(initial_form)
+
+        # Temporary, to save money with the openai api when testing
+        cover_letter.data['body'] = 'Yaaaaahoooooo!!!'
+
+        # Saves the processed data
+        session['cover_letter_data'] = cover_letter.data
+
+        # Show new part of the 
+        return redirect(url_for('home'))
 
         data_for_next_form = {
-            'hiring_manager': cover_letter_data.hiring_manager,
+            'hiring_manager': cover_letter.hiring_manager,
             'cover_letter_body': "xxx",
-            'closing_expression': cover_letter_data.closing_expression,
-            'candidate': cover_letter_data.candidate_name,
+            'closing_expression': cover_letter.closing_expression,
+            'candidate': cover_letter.candidate_name,
         }
 
         return jsonify(data_for_next_form)
@@ -48,11 +58,6 @@ def home():
 
     elif request.method == 'GET':
         return render_template('main.html', initial_form=initial_form, plain_txt_form=plain_txt_form)
-
-@app.route('/cover_letter_as_txt', methods=['GET', 'POST'])
-def cover_letter_as_txt():
-    form = PlainTextForm(content=cover_letter_data.base_cover_letter_content)
-    return render_template('cover_letter_as_txt.html', form = form)
 
 # Function used in ``/test`` to make the form labels more readable
 def decamelize(s):

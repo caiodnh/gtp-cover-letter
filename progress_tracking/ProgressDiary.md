@@ -54,3 +54,5 @@ O que precisamos para isso?
 ---
 - Ok, isso foi um terror. Não rolou nem fudendo. Mas acho que agora descobri como fazer.
 - Vai ser tudo dentro da mesma função, no /, e vai ter 2 submits. Acho que isso vai funcionar bem.
+## Dia 2024-02-06
+- Eu quero agora criar o copy to clipboard button

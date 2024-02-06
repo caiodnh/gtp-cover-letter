@@ -68,12 +68,12 @@ class CoverLetterTxt(FlaskForm):
 
 class PlainTextForm(FlaskForm):
     hiring_manager = StringField('Hiring Manager', [validators.DataRequired()])
-    cover_letter_body = TextAreaField('Body', [validators.DataRequired()])
+    body = TextAreaField('Body', [validators.DataRequired()])
     closing_expression = StringField('Closing expression', [validators.DataRequired()])
-    candidate = StringField('Candidate', [validators.DataRequired()])
+    candidate_name = StringField('Candidate', [validators.DataRequired()])
 
-    def set_defaults(self, data):
-        self.hiring_manager.data = data.hiring_manager
-        self.cover_letter_body.data = data.gpt_cover_letter
-        self.closing_expression.data = data.closing_expression
-        self.candidate.data = data.candidate_name
+    def set_default_values(self, data : dict):
+        self.hiring_manager.data = data['hiring_manager']
+        self.body.data = data['body']
+        self.closing_expression.data = data['closing_expression']
+        self.candidate_name.data = data['candidate_name']

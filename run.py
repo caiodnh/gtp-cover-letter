@@ -18,10 +18,21 @@ def home():
     initial_form = InitialForm()
     plain_txt_form = PlainTextForm()
 
+    stored_data = session.get('cover_letter_data', None)
+
+    if stored_data:
+        plain_txt_form.set_default_values(stored_data)
+
     if request.method == 'GET':
-        # Check if session data exists and pass it to the template or handle it as needed
         stored_data = session.get('cover_letter_data', None)
-        return render_template('main.html', initial_form=initial_form, plain_txt_form=plain_txt_form, stored_data=stored_data)
+
+        if stored_data:
+            plain_txt_form.set_default_values(stored_data)
+            display_plain_txt_form = True
+        else:
+            display_plain_txt_form = False
+
+        return render_template('main.html', initial_form=initial_form, plain_txt_form=plain_txt_form, display_plain_txt_form=display_plain_txt_form)
 
     if initial_form.validate_on_submit():
         # Process the initial_form data; it resets all entries in cover_letter.data
@@ -33,31 +44,17 @@ def home():
 
         # Saves the processed data
         session['cover_letter_data'] = cover_letter.data
+        plain_txt_form.set_default_values(cover_letter.data)
 
         # Show new part of the 
+        return render_template('main.html', initial_form=initial_form, plain_txt_form=plain_txt_form, display_plain_txt_form=True)
         return redirect(url_for('home'))
 
-        data_for_next_form = {
-            'hiring_manager': cover_letter.hiring_manager,
-            'cover_letter_body': "xxx",
-            'closing_expression': cover_letter.closing_expression,
-            'candidate': cover_letter.candidate_name,
-        }
-
-        return jsonify(data_for_next_form)
-
-        # print("Create gpt cover letter")
-        # cover_letter.create_cover_letter()
-        # print("Create latex files")
-        # cover_letter.create_latex_files()
-
-        # latex_directory = cover_letter.latex_directory
-        # filename = "CoverLetter.pdf"
-
-        # return send_from_directory(directory=latex_directory, path=filename, as_attachment=False)
-
-    elif request.method == 'GET':
-        return render_template('main.html', initial_form=initial_form, plain_txt_form=plain_txt_form)
+@app.route('/reset_data', methods=['GET','POST'])
+def reset_data():
+    session.clear()
+    
+    return redirect(url_for('home'))
 
 # Function used in ``/test`` to make the form labels more readable
 def decamelize(s):

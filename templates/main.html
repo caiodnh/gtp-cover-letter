@@ -64,9 +64,19 @@
             <div style="height: 10px;"></div>
             <div id="buttonGroup">
                 <button type="button" id="copyLetterButton" onclick="copyLetterToClipboard()">Copy Letter to Clipboard</button>
-                <button type="button" id="pdfButton" onclick="placeholderFunction()">PDF File</button>
+                <button type="button" id="pdfButton" onclick="showPdfForm()">PDF File</button>
                 <button type="button" id="correctGrammar" onclick="placeholderFunction()">Correct Grammar</button>
             </div>            
+        </form>
+    </div>
+
+    <!-- PDF form, appears only when PDF File button is activated -->
+    <div id="pdfFormContainer" style="display: none;">
+        <form method="post" action="{{ url_for('home') }}">
+            {{ pdf_form.hidden_tag() }}
+            {{ pdf_form.company_address.label }} {{ pdf_form.company_address() }}
+            <!-- Add any additional fields and a submit button -->
+            <button type="submit">Submit PDF Form</button>
         </form>
     </div>
     

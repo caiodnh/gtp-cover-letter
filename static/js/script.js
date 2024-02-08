@@ -38,3 +38,8 @@ function placeholderFunction() {
     console.log("PDF functionality will be implemented here.");
     // Future implementation
 }
+
+function showPdfForm() {
+    var pdfFormContainer = document.getElementById('pdfFormContainer');
+    pdfFormContainer.style.display = pdfFormContainer.style.display === 'none' ? 'block' : 'none';
+}

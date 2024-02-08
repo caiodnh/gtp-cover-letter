@@ -1,4 +1,4 @@
-from forms import InitialForm, PlainTextForm
+from forms import InitialForm, PlainTextForm, PdfForm
 from gpt_interface import GptMixin
 from latex_generator import LatexMixin
     
@@ -55,3 +55,6 @@ class CoverLetter(GptMixin, LatexMixin):
                 return '\n'.join(lines[1:])  # Join all lines except the first one
             else:
                 return '\n'.join(lines)  # Join all lines if no XML declaration
+            
+    def process_pdf_form(self, form : PdfForm):
+        self.data['company_address'] = form.company_address.data

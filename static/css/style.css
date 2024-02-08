@@ -27,4 +27,16 @@ body {
     flex-grow: 1;
     max-width: 400px;
 }
+#buttonGroup {
+    display: flex;
+    justify-content: start; /* Adjusted to start to keep buttons to the left and closer */
+}
+
+#copyLetterButton, #pdfButton {
+    margin-right: 5px; /* Adds a small space to the right of each button */
+}
+
+#pdfButton {
+    margin-right: 0; /* Removes the margin from the right of the last button */
+}
 

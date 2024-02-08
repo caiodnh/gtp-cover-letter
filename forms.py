@@ -77,3 +77,6 @@ class PlainTextForm(FlaskForm):
         self.body.data = data['body']
         self.closing_expression.data = data['closing_expression']
         self.candidate_name.data = data['candidate_name']
+
+class PdfForm(FlaskForm):
+    company_address = StringField('Company Address')

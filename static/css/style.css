@@ -27,16 +27,12 @@ body {
     flex-grow: 1;
     max-width: 400px;
 }
+
 #buttonGroup {
     display: flex;
-    justify-content: start; /* Adjusted to start to keep buttons to the left and closer */
+    justify-content: start; /* Aligns items to the start */
 }
 
-#copyLetterButton, #pdfButton {
-    margin-right: 5px; /* Adds a small space to the right of each button */
+#buttonGroup button:not(:last-child) {
+    margin-right: 5px; /* Adds margin to all buttons except the last one */
 }
-
-#pdfButton {
-    margin-right: 0; /* Removes the margin from the right of the last button */
-}
-

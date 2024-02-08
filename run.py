@@ -50,10 +50,9 @@ def home():
         return render_template('main.html', initial_form=initial_form, plain_txt_form=plain_txt_form, display_plain_txt_form=True)
         return redirect(url_for('home'))
 
-@app.route('/reset_data', methods=['GET','POST'])
-def reset_data():
+@app.route('/reset', methods=['GET','POST'])
+def reset():
     session.clear()
-    
     return redirect(url_for('home'))
 
 # Function used in ``/test`` to make the form labels more readable

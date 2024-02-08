@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, redirect, url_for, jsonify, session
 import xml.etree.ElementTree as ET
 import re
-from forms import InitialForm, PlainTextForm
+from forms import InitialForm, PlainTextForm, PdfForm
 from cover_letter_processing import CoverLetter
 from flask import send_from_directory
 
@@ -17,6 +17,7 @@ def home():
     # Create forms
     initial_form = InitialForm()
     plain_txt_form = PlainTextForm()
+    pdf_form = PdfForm()
 
     stored_data = session.get('cover_letter_data', None)
 
@@ -24,15 +25,7 @@ def home():
         plain_txt_form.set_default_values(stored_data)
 
     if request.method == 'GET':
-        stored_data = session.get('cover_letter_data', None)
-
-        if stored_data:
-            plain_txt_form.set_default_values(stored_data)
-            display_plain_txt_form = True
-        else:
-            display_plain_txt_form = False
-
-        return render_template('main.html', initial_form=initial_form, plain_txt_form=plain_txt_form, display_plain_txt_form=display_plain_txt_form)
+        return render_template('main.html', initial_form=initial_form, plain_txt_form=plain_txt_form, pdf_form=pdf_form, display_plain_txt_form=False)
 
     if initial_form.validate_on_submit():
         # Process the initial_form data; it resets all entries in cover_letter.data
@@ -47,8 +40,7 @@ def home():
         plain_txt_form.set_default_values(cover_letter.data)
 
         # Show new part of the 
-        return render_template('main.html', initial_form=initial_form, plain_txt_form=plain_txt_form, display_plain_txt_form=True)
-        return redirect(url_for('home'))
+        return render_template('main.html', initial_form=initial_form, plain_txt_form=plain_txt_form, pdf_form=pdf_form, display_plain_txt_form=True)
 
 @app.route('/reset', methods=['GET','POST'])
 def reset():
@@ -85,4 +77,3 @@ def test():
 
 if __name__ == '__main__':
     app.run(debug=True)
-

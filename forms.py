@@ -79,4 +79,4 @@ class PlainTextForm(FlaskForm):
         self.candidate_name.data = data['candidate_name']
 
 class PdfForm(FlaskForm):
-    company_address = StringField('Company Address')
+    company_address = TextAreaField('Company Address', [validators.DataRequired()])

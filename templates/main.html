@@ -19,7 +19,7 @@
     </div>
     
     <!-- Container for the Intial Form. Shows from the start. -->
-    <div class="container" id="initialFormContainer">
+    <div class="container" id="initialFormContainer" >
         <form method="post">
             <!-- Hidden fields: CSRF token for security -->
             {{ initial_form.hidden_tag() }}
@@ -64,22 +64,34 @@
             <div style="height: 10px;"></div>
             <div id="buttonGroup">
                 <button type="button" id="copyLetterButton" onclick="copyLetterToClipboard()">Copy Letter to Clipboard</button>
-                <button type="button" id="pdfButton" onclick="showPdfForm()">PDF File</button>
-                <button type="button" id="correctGrammar" onclick="placeholderFunction()">Correct Grammar</button>
+                <button type="button" id="pdfButton" onclick="submitPdfForm()">PDF File</button>
+                <input type="hidden" name="form_action" value="">
+                <!-- <button type="button" id="correctGrammar" onclick="placeholderFunction()">Correct Grammar</button> -->
             </div>            
         </form>
     </div>
 
-    <!-- PDF form, appears only when PDF File button is activated -->
-    <div id="pdfFormContainer" style="display: none;">
+    <div class="container" id="pdfFormContainer" style="display: none; max-width: 800px; margin: 0 auto;">
         <form method="post" action="{{ url_for('home') }}">
             {{ pdf_form.hidden_tag() }}
-            {{ pdf_form.company_address.label }} {{ pdf_form.company_address() }}
-            <!-- Add any additional fields and a submit button -->
-            <button type="submit">Submit PDF Form</button>
+            <div class="form-group">
+                {{ pdf_form.company_address.label }} {{ pdf_form.company_address() }}
+            </div>
+            <button type="submit" class="btn">Submit PDF Form</button>
         </form>
     </div>
     
+    
+
+    <!-- PDF form, appears only when PDF File button is activated -->
+    <!-- <div class="container" id="pdfFormContainer" style="{{ 'display: block;' if display_pdf_form else 'display: none;' }}">
+        <form method="post" action="{{ url_for('home') }}">
+            {{ pdf_form.hidden_tag() }}
+            {{ pdf_form.company_address.label }} {{ pdf_form.company_address() }}
+            <button type="submit">Submit PDF Form</button>
+        </form>
+    </div>
+     -->
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     
 </body>

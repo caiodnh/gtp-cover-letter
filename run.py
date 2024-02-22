@@ -42,6 +42,18 @@ def home():
         # Show new part of the 
         return render_template('main.html', initial_form=initial_form, plain_txt_form=plain_txt_form, pdf_form=pdf_form, display_plain_txt_form=True)
 
+    action = request.form.get('form_action')
+
+    if action == 'generate_pdf':
+        # Update the CoverLetter object here based on form inputs
+        # Possibly save or return the PDF here
+
+        # Adjust to show the PDF form and scroll into view
+        # Ensure you are sending necessary data to the template for rendering
+        return render_template('main.html', initial_form=initial_form, plain_txt_form=plain_txt_form, pdf_form=pdf_form, display_plain_txt_form=True, display_pdf_form=True)
+
+
+
 @app.route('/reset', methods=['GET','POST'])
 def reset():
     session.clear()
